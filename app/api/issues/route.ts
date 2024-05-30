@@ -1,11 +1,6 @@
 import prisma from "@/prisma/db";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-
-const issueSchema = z.object({
-  title: z.string().min(1, "Title must be at least 1 character").max(255),
-  description: z.string().min(1, "Description must be at least 1 character"),
-});
+import { issueSchema } from "../../schemas/issueSchema";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
