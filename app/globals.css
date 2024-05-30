@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@radix-ui/themes/styles.css";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -22,4 +23,8 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.radix-themes {
+  --default-font-family: var(--font-inter);
 }
