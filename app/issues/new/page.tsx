@@ -1,6 +1,6 @@
 "use client";
 
-import { TextField, Button, Callout } from "@radix-ui/themes";
+import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
 import { CiCircleInfo } from "react-icons/ci";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
@@ -14,6 +14,7 @@ import ErrorMessage from "@/app/components/ErrorMessage";
 export default function NewIssuePage() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -26,6 +27,7 @@ export default function NewIssuePage() {
 
   const onSubmit = async (data: IssueForm) => {
     try {
+      setIsSubmitting(true);
       const response = await fetch("/api/issues", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -37,6 +39,7 @@ export default function NewIssuePage() {
         return;
       }
     } catch (error) {
+      setIsSubmitting(false);
       setError("An unexpected error occurred. Please try again.");
     }
 
@@ -59,7 +62,7 @@ export default function NewIssuePage() {
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller name="description" control={control} render={({ field }) => <SimpleMDE placeholder="Description" {...field} />} />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner />}</Button>
       </form>
     </div>
   );
