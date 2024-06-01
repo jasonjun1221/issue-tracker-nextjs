@@ -29,15 +29,29 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
   const onSubmit = async (data: IssueFormData) => {
     try {
       setIsSubmitting(true);
-      const response = await fetch("/api/issues", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
 
-      if (!response.ok) {
-        setError("An error occurred while submitting the form.");
-        return;
+      if (issue) {
+        const response = await fetch(`/api/issues/${issue.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          setError("An error occurred while updating the form.");
+          return;
+        }
+      } else {
+        const response = await fetch("/api/issues", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          setError("An error occurred while submitting the form.");
+          return;
+        }
       }
     } catch (error) {
       setIsSubmitting(false);
@@ -68,7 +82,9 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
           render={({ field }) => <SimpleMDE placeholder="Description" {...field} />}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner />}</Button>
+        <Button disabled={isSubmitting}>
+          {issue ? "Update Issue" : "Submit New Issue"} {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
