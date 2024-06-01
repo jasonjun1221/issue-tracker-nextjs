@@ -1,7 +1,7 @@
 "use client";
 
 import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
-import { CiCircleInfo } from "react-icons/ci";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
@@ -51,7 +51,7 @@ export default function NewIssuePage() {
       {error && (
         <Callout.Root color="red" className="mb-5">
           <Callout.Icon>
-            <CiCircleInfo />
+            <InfoCircledIcon />
           </Callout.Icon>
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
