@@ -2,15 +2,18 @@
 
 import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { cache, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IssueFormData, issueSchema } from "@/app/schemas/issueSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import { Issue } from "@prisma/client";
+
+// This is a dynamic import for the SimpleMDE editor to prevent it from being bundled in the server-side code.
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), { ssr: false });
 
 export default function IssueForm({ issue }: { issue?: Issue }) {
   const router = useRouter();
@@ -57,8 +60,8 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
       setIsSubmitting(false);
       setError("An unexpected error occurred. Please try again.");
     }
-
     router.push("/issues");
+    router.refresh();
   };
 
   return (
