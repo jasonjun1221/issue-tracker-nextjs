@@ -3,7 +3,7 @@ import { Table } from "@radix-ui/themes";
 import IssueStatusBadge from "../components/IssueStatusBadge";
 import IssueActions from "./IssueActions";
 import delay from "delay";
-import Link from "next/link";
+import Link from "../components/Link";
 
 export default async function IssuesPage() {
   const issues = await prisma.issue.findMany();
