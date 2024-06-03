@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoBug } from "react-icons/io5";
 import { useSession } from "next-auth/react";
-import { Avatar, Box, Container, DropdownMenu, Flex, Text } from "@radix-ui/themes";
+import { Avatar, Box, Container, DropdownMenu, Flex, Skeleton, Text } from "@radix-ui/themes";
 
 const links = [
   { href: "/", label: "Dashboard" },
@@ -33,9 +33,14 @@ export default function Navbar() {
 const AuthStatus = () => {
   const { status, data } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton className="w-12 h-6" />;
 
-  if (status === "unauthenticated") return <Link className="nav-link" href="/api/auth/signin">Log in</Link>;
+  if (status === "unauthenticated")
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Log in
+      </Link>
+    );
 
   return (
     <Box>
