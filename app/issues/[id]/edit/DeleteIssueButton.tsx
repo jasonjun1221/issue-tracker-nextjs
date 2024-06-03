@@ -1,8 +1,25 @@
 "use client";
 
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 
 function DeleteIssueButton({ issueId }: { issueId: string }) {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const response = await fetch(`/api/issues/${issueId}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      console.error("An error occurred while deleting the issue.");
+      return;
+    }
+
+    router.push("/issues");
+    router.refresh();
+  };
+
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
@@ -21,7 +38,7 @@ function DeleteIssueButton({ issueId }: { issueId: string }) {
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="solid" color="red">
+            <Button variant="solid" color="red" onClick={handleDelete}>
               Delete Issue
             </Button>
           </AlertDialog.Action>
