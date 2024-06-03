@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Theme } from "@radix-ui/themes";
+import { Container, Theme } from "@radix-ui/themes";
 import "./globals.css";
 import Navbar from "./Navbar";
 
@@ -21,7 +21,9 @@ export default function RootLayout({
       <body className={inter.variable}>
         <Theme accentColor="iris">
           <Navbar />
-          <main className="p-5">{children}</main>
+          <main className="p-5">
+            <Container>{children}</Container>
+          </main>
         </Theme>
       </body>
     </html>
