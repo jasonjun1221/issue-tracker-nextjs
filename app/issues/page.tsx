@@ -1,5 +1,5 @@
 import prisma from "@/prisma/db";
-import { Table } from "@radix-ui/themes";
+import { Skeleton, Table } from "@radix-ui/themes";
 import { Link, IssueStatusBadge } from "@/app/components";
 import IssueActions from "./IssueActions";
 
@@ -18,6 +18,7 @@ export default async function IssuesPage() {
             <Table.ColumnHeaderCell className="hidden md:table-cell">Created</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
+
         <Table.Body>
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
