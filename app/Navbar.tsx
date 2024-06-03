@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoBug } from "react-icons/io5";
 import classNames from "classnames";
+import { useSession } from "next-auth/react";
+import { Box } from "@radix-ui/themes";
 
 const links = [
   { href: "/", label: "Dashboard" },
@@ -12,6 +14,7 @@ const links = [
 
 export default function Navbar() {
   const currentPath = usePathname();
+  const { status, data } = useSession();
 
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
@@ -34,6 +37,11 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
+
+      <Box>
+        {status === "authenticated" && <Link href="/api/auth/signout">Log out</Link>}
+        {status === "unauthenticated" && <Link href="/api/auth/signin">Log in</Link>}
+      </Box>
     </nav>
   );
 }
