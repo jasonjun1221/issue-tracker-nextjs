@@ -6,14 +6,18 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-function AssigneeSelect({ issue }: { issue: Issue }) {
-  const userQuery = useQuery({
+const useUsers = () => {
+  return useQuery({
     queryKey: ["users"],
     queryFn: () => axios.get<User[]>("/api/users").then((res) => res.data),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
+};
 
-  const handleChange = async (userId: string) => {
+export default function AssigneeSelect({ issue }: { issue: Issue }) {
+  const { data, error, isPending } = useUsers();
+
+  const assignIssue = async (userId: string) => {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId === "unassigned" ? null : userId,
@@ -23,19 +27,19 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
     }
   };
 
-  if (userQuery.isPending) return <Skeleton height="2rem" />;
+  if (isPending) return <Skeleton height="2rem" />;
 
-  if (userQuery.error) return null;
+  if (error) return null;
 
   return (
     <>
-      <Select.Root onValueChange={handleChange} defaultValue={issue.assignedToUserId || "unassigned"}>
+      <Select.Root onValueChange={assignIssue} defaultValue={issue.assignedToUserId || "unassigned"}>
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
             <Select.Item value="unassigned">Unassigned</Select.Item>
-            {userQuery.data?.map((user) => (
+            {data?.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
               </Select.Item>
@@ -47,4 +51,3 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
     </>
   );
 }
-export default AssigneeSelect;
