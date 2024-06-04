@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IssueFormData, issueSchema } from "@/app/schemas/issueSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import { Issue } from "@prisma/client";
+import axios from "axios";
 
 export default function IssueForm({ issue }: { issue?: Issue }) {
   const router = useRouter();
@@ -31,25 +32,17 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
       setIsSubmitting(true);
 
       if (issue) {
-        const response = await fetch(`/api/issues/${issue.id}`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+        const response = await axios.put(`/api/issues/${issue.id}`, data);
 
-        if (!response.ok) {
-          setError("An error occurred while updating the form.");
+        if (!response.data) {
+          setError("An error occurred while updating the issue.");
           return;
         }
       } else {
-        const response = await fetch("/api/issues", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
+        const response = await axios.post("/api/issues", data);
 
-        if (!response.ok) {
-          setError("An error occurred while submitting the form.");
+        if (!response.data) {
+          setError("An error occurred while creating the issue.");
           return;
         }
       }
