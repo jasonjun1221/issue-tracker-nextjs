@@ -12,7 +12,7 @@ function AssigneeSelect() {
     staleTime: 1000 * 60,
   });
 
-  if (userQuery.isPending) return <Skeleton height='2rem'/>;
+  if (userQuery.isPending) return <Skeleton height="2rem" />;
 
   if (userQuery.error) return null;
 
