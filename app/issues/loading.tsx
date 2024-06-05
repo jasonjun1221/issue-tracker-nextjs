@@ -17,7 +17,7 @@ export default async function LoadingIssuePage() {
             <Table.ColumnHeaderCell className="hidden md:table-cell">Created</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
-        
+
         <Table.Body>
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
