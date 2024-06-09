@@ -14,7 +14,7 @@ interface Container {
   status: Status;
 }
 
-export default function IssuesSummary({ open, inProgress, closed }: Props) {
+export default function IssueSummary({ open, inProgress, closed }: Props) {
   const containers: Container[] = [
     { label: "Open Issues", value: open, status: "OPEN" },
     { label: "In Progress Issues", value: inProgress, status: "IN_PROGRESS" },
